@@ -1,25 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import download from 'downloadjs';
+import React, { useState } from 'react';
 
-function App() {
+function MemeGenerator() {
+  const [topText, setTopText] = useState('');
+  const [bottomText, setBottomText] = useState('');
+  const [template, setTemplate] = useState('doge');
+  const [memeUrl, setMemeUrl] = useState(
+    `https://memegen.link/${template}/${topText}/${bottomText}.jpg`,
+  );
+
+  const handleTopTextChange = (event) => {
+    setTopText(event.target.value);
+  };
+
+  const handleBottomTextChange = (event) => {
+    setBottomText(event.target.value);
+  };
+
+  const handleTemplateChange = (event) => {
+    setTemplate(event.target.value);
+  };
+
+  React.useEffect(() => {
+    setMemeUrl(`https://memegen.link/${template}/${topText}/${bottomText}.jpg`);
+  }, [topText, bottomText, template]);
+
+  // Uses downloadjs to download the generated meme
+  function handleDownload() {
+    const fileName = `${template}-${topText}-${bottomText}.jpg`;
+    download(memeUrl, fileName);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <label htmlFor="top-text">Top text:</label>
+      <input id="top-text" value={topText} onChange={handleTopTextChange} />
+
+      <label htmlFor="bottom-text">Bottom text:</label>
+      <input
+        id="bottom-text"
+        value={bottomText}
+        onChange={handleBottomTextChange}
+      />
+
+      <label htmlFor="template-selector">Meme template:</label>
+      <input
+        id="template-selector"
+        value={template}
+        onChange={handleTemplateChange}
+      />
+
+      <img data-test-id="meme-image" src={memeUrl} alt="Meme" />
+
+      <button onClick={handleDownload}>Download</button>
     </div>
   );
 }
 
-export default App;
+export default MemeGenerator;
