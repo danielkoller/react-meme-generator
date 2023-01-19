@@ -17,23 +17,14 @@ function MemeGenerator() {
 
   const handleTopTextChange = (event) => {
     setTopText(event.target.value);
-    setMemeUrl(
-      `https://api.memegen.link/images/${template}/${event.target.value}/${bottomText}`,
-    );
   };
 
   const handleBottomTextChange = (event) => {
     setBottomText(event.target.value);
-    setMemeUrl(
-      `https://api.memegen.link/images/${template}/${topText}/${event.target.value}`,
-    );
   };
 
   const handleTemplateChange = (event) => {
     setTemplate(event.target.value);
-    setMemeUrl(
-      `https://api.memegen.link/images/${event.target.value}/${topText}/${bottomText}`,
-    );
   };
 
   return (
@@ -57,7 +48,7 @@ function MemeGenerator() {
 
       <img
         style={{ width: '300px' }}
-        src={`https://api.memegen.link/images/${template}/${topText}/${bottomText}`}
+        src={memeUrl}
         alt="meme"
         data-test-id="meme-image"
       />
