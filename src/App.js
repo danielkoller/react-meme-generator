@@ -1,10 +1,14 @@
 import { saveAs } from 'file-saver';
 import React, { useState } from 'react';
+import TemplateSelector from './TemplateSelector';
+import TextInput from './TextInput';
 
 function MemeGenerator() {
+  // Declaring the useState-variables
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [template, setTemplate] = useState('fine');
+  // Declaring the memeURL
   const memeUrl = (memes, top, bottom) => {
     return !top && !bottom
       ? `https://api.memegen.link/images/${memes}.png`
@@ -15,44 +19,21 @@ function MemeGenerator() {
       : `https://api.memegen.link/images/${memes}/${top}/${bottom}.png`;
   };
 
-  const handleTopTextChange = (event) => {
-    setTopText(event.target.value);
-  };
-
-  const handleBottomTextChange = (event) => {
-    setBottomText(event.target.value);
-  };
-
-  const handleTemplateChange = (event) => {
-    setTemplate(event.target.value);
-  };
-
   return (
     <div>
-      <label htmlFor="top-text">Top text:</label>
-      <input id="top-text" value={topText} onChange={handleTopTextChange} />
-
-      <label htmlFor="bottom-text">Bottom text:</label>
-      <input
-        id="bottom-text"
-        value={bottomText}
-        onChange={handleBottomTextChange}
+      <TextInput label="Top text:" text={topText} setText={setTopText} />
+      <TextInput
+        label="Bottom text:"
+        text={bottomText}
+        setText={setBottomText}
       />
-
-      <label htmlFor="template-selector">Meme template:</label>
-      <input
-        id="template-selector"
-        value={template}
-        onChange={handleTemplateChange}
-      />
-
+      <TemplateSelector template={template} setTemplate={setTemplate} />
       <img
         style={{ width: '300px' }}
         src={memeUrl(template, topText, bottomText)}
         alt="meme"
         data-test-id="meme-image"
       />
-
       <button
         onClick={() => {
           saveAs(memeUrl(template, topText, bottomText), `${template}.png`);
