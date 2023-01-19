@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function MemeGenerator() {
   const [topText, setTopText] = useState('');
@@ -8,6 +8,12 @@ function MemeGenerator() {
   const [memeUrl, setMemeUrl] = useState(
     `https://api.memegen.link/images/${template}/${topText}/${bottomText}`,
   );
+
+  useEffect(() => {
+    setMemeUrl(
+      `https://api.memegen.link/images/${template}/${topText}/${bottomText}`,
+    );
+  }, [template, topText, bottomText]);
 
   const handleTopTextChange = (event) => {
     setTopText(event.target.value);
