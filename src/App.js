@@ -5,17 +5,29 @@ function MemeGenerator() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [template, setTemplate] = useState('fine');
+  const [memeUrl, setMemeUrl] = useState(
+    `https://api.memegen.link/images/${template}/${topText}/${bottomText}`,
+  );
 
   const handleTopTextChange = (event) => {
     setTopText(event.target.value);
+    setMemeUrl(
+      `https://api.memegen.link/images/${template}/${event.target.value}/${bottomText}`,
+    );
   };
 
   const handleBottomTextChange = (event) => {
     setBottomText(event.target.value);
+    setMemeUrl(
+      `https://api.memegen.link/images/${template}/${topText}/${event.target.value}`,
+    );
   };
 
   const handleTemplateChange = (event) => {
     setTemplate(event.target.value);
+    setMemeUrl(
+      `https://api.memegen.link/images/${event.target.value}/${topText}/${bottomText}`,
+    );
   };
 
   return (
@@ -46,10 +58,12 @@ function MemeGenerator() {
 
       <button
         onClick={() => {
-          saveAs(
-            `https://api.memegen.link/images/${template}/${topText}/${bottomText}`,
-            `${template}.jpg`,
-          );
+          fetch(memeUrl)
+            .then((res) => res.blob())
+            .then((blob) => saveAs(blob, `${template}.jpg`))
+            .catch((error) => {
+              console.log('An error occurred: ', error);
+            });
         }}
       >
         Download
