@@ -1,19 +1,19 @@
 import { saveAs } from 'file-saver';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 function MemeGenerator() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [template, setTemplate] = useState('fine');
-  const [memeUrl, setMemeUrl] = useState(
-    `https://api.memegen.link/images/${template}/${topText}/${bottomText}`,
-  );
-
-  useEffect(() => {
-    setMemeUrl(
-      `https://api.memegen.link/images/${template}/${topText}/${bottomText}`,
-    );
-  }, [template, topText, bottomText]);
+  const memeUrl = (memes, top, bottom) => {
+    return !top && !bottom
+      ? `https://api.memegen.link/images/${memes}.png`
+      : !bottom
+      ? `https://api.memegen.link/images/${memes}/${top}.png`
+      : !top
+      ? `https://api.memegen.link/images/${memes}/_/${bottom}.png`
+      : `https://api.memegen.link/images/${memes}/${top}/${bottom}.png`;
+  };
 
   const handleTopTextChange = (event) => {
     setTopText(event.target.value);
@@ -48,19 +48,14 @@ function MemeGenerator() {
 
       <img
         style={{ width: '300px' }}
-        src={memeUrl}
+        src={memeUrl(template, topText, bottomText)}
         alt="meme"
         data-test-id="meme-image"
       />
 
       <button
         onClick={() => {
-          fetch(memeUrl)
-            .then((res) => res.blob())
-            .then((blob) => saveAs(blob, `${template}.jpg`))
-            .catch((error) => {
-              console.log('An error occurred: ', error);
-            });
+          saveAs(memeUrl(template, topText, bottomText), `${template}.png`);
         }}
       >
         Download
