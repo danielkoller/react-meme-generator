@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 import React, { useState } from 'react';
-import TemplateSelector from './TemplateSelector';
-import TextInput from './TextInput';
+import TemplateSelector from './components/TemplateSelector';
+import TextInput from './components/TextInput';
 
 function MemeGenerator() {
   // Declaring the useState-variables
