@@ -21,6 +21,7 @@ function MemeGenerator() {
 
   return (
     <div>
+      <h1>React Meme Generator</h1>
       <TextInput label="Top text:" text={topText} setText={setTopText} />
       <TextInput
         label="Bottom text:"
