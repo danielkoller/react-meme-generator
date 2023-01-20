@@ -1,3 +1,4 @@
+import './App.css';
 import { saveAs } from 'file-saver';
 import React, { useState } from 'react';
 import TemplateSelector from './components/TemplateSelector';
@@ -22,9 +23,9 @@ function MemeGenerator() {
   return (
     <div>
       <h1>React Meme Generator</h1>
-      <TextInput label="Top text:" text={topText} setText={setTopText} />
+      <TextInput label="Top text: " text={topText} setText={setTopText} />
       <TextInput
-        label="Bottom text:"
+        label="Bottom text: "
         text={bottomText}
         setText={setBottomText}
       />
@@ -35,13 +36,16 @@ function MemeGenerator() {
         alt="meme"
         data-test-id="meme-image"
       />
-      <button
-        onClick={() => {
-          saveAs(memeUrl(template, topText, bottomText), `${template}.png`);
-        }}
-      >
-        Download
-      </button>
+      <div className="button-div">
+        <button
+          className="button"
+          onClick={() => {
+            saveAs(memeUrl(template, topText, bottomText), `${template}.png`);
+          }}
+        >
+          Download
+        </button>
+      </div>
     </div>
   );
 }
